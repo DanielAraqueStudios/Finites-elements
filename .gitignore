@@ -1,0 +1,10 @@
+# Ruflo local secrets and runtime data
+.env
+.env.local
+.env.*.local
+
+# Claude / Ruflo tooling - never commit
+.claude/
+.claude-flow/
+.swarm/
+CLAUDE.md
