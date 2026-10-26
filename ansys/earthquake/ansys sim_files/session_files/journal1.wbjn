@@ -1,0 +1,56 @@
+﻿# encoding: utf-8
+# Release 16.0
+SetScriptVersion(Version="16.0.361")
+template1 = GetTemplate(
+    TemplateName="Transient Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+system1.DisplayText = "main"
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+fileType1 = GetFileType(Name="GeometryFileType")
+ImportFile(
+    FilePath=GetAbsoluteUserPathName("universidad/ELEMENTOS/TERCER CORTE/CASA PREFABRICADA/CAD/final cad to export.IGS"),
+    FileType=fileType1)
+system2 = GetSystem(Name="Geometry")
+geometryComponent1 = system2.GetComponent(Name="Geometry")
+geometryComponent1.Update(AllDependencies=True)
+geometry2 = system2.GetContainer(ComponentName="Geometry")
+geometry2.Edit()
+geometry1.Exit()
+geometry2.Exit()
+geometry1.Edit()
+template2 = GetTemplate(TemplateName="Mesh")
+system3 = template2.CreateSystem(
+    Position="Right",
+    RelativeTo=system1)
+geometryComponent2 = system3.GetComponent(Name="Geometry")
+geometryComponent3 = system1.GetComponent(Name="Geometry")
+geometryComponent2.ReplaceWithShare(
+    TargetSystem=system3,
+    ComponentToShare=geometryComponent3,
+    SourceSystem=system1)
+meshComponent1 = system3.GetComponent(Name="Mesh")
+meshComponent1.Refresh()
+mesh1 = system3.GetContainer(ComponentName="Mesh")
+mesh1.Edit()
+mesh1.Exit()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+geometry1.Exit()
+model1.Exit()
+system3.Delete()
+system2.Delete()
+system1.Delete()
+system4 = template1.CreateSystem()
+system4.DisplayText = "main"
+geometry3 = system4.GetContainer(ComponentName="Geometry")
+geometry3.Edit()
+Save(Overwrite=True)
+modelComponent2 = system4.GetComponent(Name="Model")
+modelComponent2.Refresh()
+model2 = system4.GetContainer(ComponentName="Model")
+model2.Edit()
+Save(Overwrite=True)
