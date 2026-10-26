@@ -1,0 +1,38 @@
+! Excitacion trifasica + frontera (Ej. 4, Magnetostatic WB 16.0, unidades SI)
+! Snapshot t = 0:  IA = +Ipk, IB = IC = -Ipk/2  (Ipk = 5 A, N = 50 vueltas)
+! Devanado de 1 capa, paso completo, q = 3 ranuras/polo/fase, 36 ranuras, 4 polos:
+!   ranura k (k = 0..35, centro a 10*k grados), patron cada 18 ranuras:
+!   A A A -C -C -C B B B -A -A -A C C C -B -B -B
+! JS = N*I / A_barra, A_barra = 3 mm x 10 mm = 3e-5 m^2, direccion global Z
+
+*DIM,NIG,ARRAY,6
+NIG(1) =  250      ! A+  : +N*IA
+NIG(2) =  125      ! C-  : -N*IC
+NIG(3) = -125      ! B+  : +N*IB
+NIG(4) = -250      ! A-  : -N*IA
+NIG(5) = -125      ! C+  : +N*IC
+NIG(6) =  125      ! B-  : -N*IB
+ABAR = 3e-3*10e-3
+
+*DO,K,0,35
+  J = MOD(K,18)
+  G = 1 + (J - MOD(J,3))/3
+  LOCAL,11,1,0,0,0,10*K          ! cilindrico girado al centro de la ranura k
+  CSYS,11
+  CMSEL,S,BOBINAS                ! componente de ELEMENTOS (36 barras de cobre)
+  ESEL,R,CENT,Y,-4,4
+  BFE,ALL,JS,1,0,0,NIG(G)/ABAR
+*ENDDO
+CSYS,0
+CSDELE,11
+
+! Flujo paralelo (AZ = 0) en las 6 caras de la caja de aire
+TOLB = 1e-6
+NSEL,S,LOC,Z,-TOLB,TOLB
+NSEL,A,LOC,Z,0.08-TOLB,0.08+TOLB
+NSEL,A,LOC,X,-0.09-TOLB,-0.09+TOLB
+NSEL,A,LOC,X,0.09-TOLB,0.09+TOLB
+NSEL,A,LOC,Y,-0.09-TOLB,-0.09+TOLB
+NSEL,A,LOC,Y,0.09-TOLB,0.09+TOLB
+D,ALL,AZ,0
+ALLSEL,ALL

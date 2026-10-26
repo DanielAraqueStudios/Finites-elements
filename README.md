@@ -11,14 +11,15 @@ Finites-elements/
 ├── ansys/
 │   ├── earthquake/                # Ej. 1 — proyecto Workbench + acelerograma sintético
 │   ├── cuy/                       # Ej. 3 — proyecto Workbench + geometría IGES/CAD
-│   └── maxwell/                   # Ej. 4 — script PyAEDT del estator
+│   ├── estator/                   # Ej. 4 — proyecto Workbench Magnetostatic + IGES + APDL
+│   └── maxwell/                   # Ej. 4 — script PyAEDT alternativo (requiere Maxwell)
 ├── cad/
-│   └── solidworks/                # Ej. 4 — macro de geometría del estator
+│   └── solidworks/                # Ej. 4 — pieza del estator (stator_magnetostatico.SLDPRT) y macros
 └── docs/
     ├── earthquake/README.md       # Ej. 1 — modelo, cargas, resultados y figuras
     ├── cuy/README.md              # Ej. 3 — modelo, cargas, resultados y figuras
     └── estator-magnetostatico/
-        └── README.md              # Ej. 4 — condiciones iniciales de la simulación magnetostática
+        └── README.md              # Ej. 4 — condiciones iniciales, simulación y resultados
 ```
 
 Cada ejercicio vive en su propia carpeta dentro de `docs/` (o la carpeta que
@@ -45,7 +46,7 @@ corresponda al tipo de entregable), con:
 | 1 | Simulación mecánica estática de casa prefabricada ante sismo en 3D | ANSYS | Resuelto (Transient Structural) — ver [`docs/earthquake/`](docs/earthquake/README.md) |
 | 2 | Simulación de deformación y esfuerzos de perfil de Canal tipo "C" para viga de acero al aplicarle un peso de 50 Ton, 2D | MATLAB-PDEtool | *Excluido de este repo (MATLAB)* |
 | 3 | Simulación térmica estática de un "cuy" (conejillo de indias) al horno, con dimensiones reales, en 3D | ANSYS | Resuelto (Steady-State Thermal) — ver [`docs/cuy/`](docs/cuy/README.md) |
-| 4 | Simulación magnetostática de bobinas de estator trifásico de motor en 3D | ANSYS | En progreso — ver [`docs/estator-magnetostatico/`](docs/estator-magnetostatico/README.md) |
+| 4 | Simulación magnetostática de bobinas de estator trifásico de motor en 3D | ANSYS | Resuelto (Magnetostatic, WB 16.0) — ver [`docs/estator-magnetostatico/`](docs/estator-magnetostatico/README.md) |
 | 5 | Simulación CFD transiente en CFX de un helicóptero tipo Apache con dos dominios rotativos (rotor principal, rotor de cola) en 3D | ANSYS | — |
 | 6 | Simulación CFD multifase de boquilla de aspersión de fertilizante líquido sobre planta de alcachofa | ANSYS | — |
 | 7 | Simulación de colisión de auto NASCAR contra muro de contención en 3D | ANSYS | — |
