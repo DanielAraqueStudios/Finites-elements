@@ -1,0 +1,42 @@
+﻿# encoding: utf-8
+# Release 16.0
+SetScriptVersion(Version="16.0.361")
+template1 = GetTemplate(
+    TemplateName="Magnetostatic",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+Save(Overwrite=True)
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+matl1 = engineeringData1.CreateMaterial(Name="Cobre")
+matl2 = engineeringData1.CreateMaterial(Name="AceroM19")
+matlProp1 = matl2.CreateProperty(
+    Name="Relative Permeability",
+    Behavior="Isotropic")
+matlProp1.SetData(
+    Index=-1,
+    Variables=["Relative Permeability"],
+    Values=[["5000"]])
+matlProp2 = matl1.CreateProperty(
+    Name="Relative Permeability",
+    Behavior="Isotropic")
+matlProp2.SetData(
+    Index=-1,
+    Variables=["Relative Permeability"],
+    Values=[["1"]])
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.SetFile(FilePath=GetAbsoluteUserPathName("GIT PERSONAL/Finites-elements/ansys/estator/stator.IGS"))
+geometry1.Edit()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+geometry1.Exit()
+Save(Overwrite=True)
+model1.Exit()
+Save(Overwrite=True)

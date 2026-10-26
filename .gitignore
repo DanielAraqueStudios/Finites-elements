@@ -34,3 +34,6 @@ CLAUDE.md
 
 # CAD temporary/lock files
 ~$*
+
+# sw_assist debug captures (screen-assist tool output, not report figures)
+**/cad/scripts/screenshots/
