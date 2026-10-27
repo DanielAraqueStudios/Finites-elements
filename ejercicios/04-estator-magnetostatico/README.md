@@ -195,6 +195,87 @@ JS = N·I / A_barra = 250 / 3×10⁻⁵ = **8.33 MA/m²** (A) y 4.17 MA/m² (B, 
 APDL (el objeto de Mechanical en 2 caras sólo satisface el requisito de "al menos una
 carga"). En las caras extremas z = 0 y z = 80 mm equivale a un modelo 2D infinito.
 
+### Código APDL usado en ANSYS
+
+La excitación de las bobinas y la frontera **no** se definen con objetos de
+Mechanical (*Source Conductor*), sino con un objeto **Commands (APDL)** insertado bajo
+*Magnetostatic (A5)*. Por eso el árbol de Mechanical no muestra bobinas ni
+excitaciones: las 36 barras de cobre son cuerpos normales agrupados en la *Named
+Selection* `BOBINAS` (Workbench la exporta como componente de **elementos**), y la
+corriente se les asigna desde este código, que se ejecuta justo antes de `SOLVE`.
+
+Configuración en Mechanical:
+
+1. *Named Selection* `BOBINAS` con los 36 cuerpos de cobre.
+2. *Magnetostatic (A5)* → *Insert* → *Commands*; pegar el contenido de
+   [`ansys/excitacion_trifasica.mac`](ansys/excitacion_trifasica.mac).
+3. *Magnetic Flux Parallel* en 2 caras exteriores de la caja de aire (requisito
+   mínimo de carga de Mechanical; la frontera completa la impone el código).
+
+```apdl
+! Excitacion trifasica + frontera (Ej. 4, Magnetostatic WB 16.0, unidades SI)
+! Snapshot t = 0:  IA = +Ipk, IB = IC = -Ipk/2  (Ipk = 5 A, N = 50 vueltas)
+! Devanado de 1 capa, paso completo, q = 3 ranuras/polo/fase, 36 ranuras, 4 polos:
+!   ranura k (k = 0..35, centro a 10*k grados), patron cada 18 ranuras:
+!   A A A -C -C -C B B B -A -A -A C C C -B -B -B
+! JS = N*I / A_barra, A_barra = 3 mm x 10 mm = 3e-5 m^2, direccion global Z
+
+*DIM,NIG,ARRAY,6
+NIG(1) =  250      ! A+  : +N*IA
+NIG(2) =  125      ! C-  : -N*IC
+NIG(3) = -125      ! B+  : +N*IB
+NIG(4) = -250      ! A-  : -N*IA
+NIG(5) = -125      ! C+  : +N*IC
+NIG(6) =  125      ! B-  : -N*IB
+ABAR = 3e-3*10e-3
+
+*DO,K,0,35
+  J = MOD(K,18)
+  G = 1 + (J - MOD(J,3))/3
+  LOCAL,11,1,0,0,0,10*K          ! cilindrico girado al centro de la ranura k
+  CSYS,11
+  CMSEL,S,BOBINAS                ! componente de ELEMENTOS (36 barras de cobre)
+  ESEL,R,CENT,Y,-4,4
+  BFE,ALL,JS,1,0,0,NIG(G)/ABAR
+*ENDDO
+CSYS,0
+CSDELE,11
+
+! Flujo paralelo (AZ = 0) en las 6 caras de la caja de aire
+TOLB = 1e-6
+NSEL,S,LOC,Z,-TOLB,TOLB
+NSEL,A,LOC,Z,0.08-TOLB,0.08+TOLB
+NSEL,A,LOC,X,-0.09-TOLB,-0.09+TOLB
+NSEL,A,LOC,X,0.09-TOLB,0.09+TOLB
+NSEL,A,LOC,Y,-0.09-TOLB,-0.09+TOLB
+NSEL,A,LOC,Y,0.09-TOLB,0.09+TOLB
+D,ALL,AZ,0
+ALLSEL,ALL
+```
+
+Qué hace cada bloque:
+
+| Bloque | Función |
+|---|---|
+| `NIG(1..6)`, `ABAR` | N·I con signo de cada grupo de 3 ranuras (A+, C−, B+, A−, C+, B−) y área de una barra |
+| `*DO,K,0,35` | Recorre las 36 ranuras; `G` elige el grupo según la posición dentro del patrón de 18 |
+| `LOCAL,11,…,10*K` + `ESEL,R,CENT,Y,-4,4` | Sistema cilíndrico girado al centro de la ranura k; selecciona los elementos de `BOBINAS` cuyo centroide está a ±4° (una sola barra) |
+| `BFE,ALL,JS,…` | Densidad de corriente de fuente JS = N·I / A_barra en dirección Z |
+| `NSEL … D,ALL,AZ,0` | Flujo paralelo en las 6 caras de la caja de aire (±0.09 m en X/Y, z = 0 y 0.08 m) |
+
+**Entrada / salida de corriente en las bobinas.** El sentido de la corriente en cada
+ranura se muestra en dos figuras: el esquema
+[`figuras/devanado_fases.png`](figuras/devanado_fases.png) (⊙ sale por +Z, ⊗ entra
+por −Z, vista desde +Z) y el resultado de ANSYS
+[`figuras/densidad_corriente_JZ.png`](figuras/densidad_corriente_JZ.png): un *User
+Defined Result* con expresión `JTZ` sobre los 36 cuerpos de `BOBINAS`. ANSYS reporta
+exactamente ±8.333 × 10⁶ A/m² (fase A) y ±4.167 × 10⁶ A/m² (fases B y C); valor
+positivo = corriente que sale, negativo = corriente que entra.
+
+Verificación en `solve.out`: en la primera iteración (la única que ANSYS imprime del
+`*DO`) `ESEL` selecciona **128 elementos**, exactamente los de una barra (cada barra
+tiene 128 elementos), y la frontera restringe 50 314 nodos.
+
 ### Resultados
 
 | Resultado | Mínimo | Máximo |
@@ -223,7 +304,8 @@ coinciden en orden de magnitud con la simulación.
 | ID | Archivo | Contenido | Estado |
 |---|---|---|---|
 | fig:ej4-geometria | `figuras/geometria.png` | Estator: núcleo + 36 barras (SolidWorks) | ⬜ pendiente |
-| fig:ej4-devanado | `figuras/devanado_fases.png` | Asignación de fases por ranura (A, B, C ±) | ⬜ pendiente |
+| fig:ej4-devanado | [`figuras/devanado_fases.png`](figuras/devanado_fases.png) | Fase y sentido de la corriente por ranura en t = 0: ⊙ sale (+Z), ⊗ entra (−Z) | ✅ |
+| fig:ej4-JZ | [`figuras/densidad_corriente_JZ.png`](figuras/densidad_corriente_JZ.png) | ANSYS: densidad de corriente JTZ en las 36 bobinas (+8.33 / +4.17 MA/m² sale, −4.17 / −8.33 MA/m² entra) | ✅ |
 | fig:ej4-malla | `figuras/malla.png` | Malla barrida (152 289 nodos) | ⬜ pendiente |
 | fig:ej4-B | [`figuras/flux_density_B.png`](figuras/flux_density_B.png) | \|B\| vista frontal (4 polos) | ✅ |
 | fig:ej4-B3d | [`figuras/flux_density_B_3d.png`](figuras/flux_density_B_3d.png) | \|B\| isométrica, núcleo + barras | ✅ |

@@ -64,7 +64,7 @@ Cada sección `ejNN-*.tex` sigue el mismo orden que el README del ejercicio:
 | Ej. 1 — Sismo | [`ejercicios/01-sismo-casa-prefabricada`](../ejercicios/01-sismo-casa-prefabricada/README.md) | 3 / 7 | ⬜ |
 | Ej. 2 — Viga C | [`ejercicios/02-viga-canal-c`](../ejercicios/02-viga-canal-c/README.md) | 0 / 5 | ⬜ |
 | Ej. 3 — Cuy | [`ejercicios/03-cuy-horno`](../ejercicios/03-cuy-horno/README.md) | 3 / 6 | ⬜ |
-| Ej. 4 — Estator | [`ejercicios/04-estator-magnetostatico`](../ejercicios/04-estator-magnetostatico/README.md) | 3 / 6 | ⬜ |
+| Ej. 4 — Estator | [`ejercicios/04-estator-magnetostatico`](../ejercicios/04-estator-magnetostatico/README.md) | 5 / 7 | ⬜ |
 | Ej. 5 — Apache | [`ejercicios/05-helicoptero-apache-cfd`](../ejercicios/05-helicoptero-apache-cfd/README.md) | 0 / 6 | ⬜ |
 | Ej. 6 — Boquilla | [`ejercicios/06-boquilla-fertilizante-multifase`](../ejercicios/06-boquilla-fertilizante-multifase/README.md) | 0 / 6 | ⬜ |
 | Ej. 7 — NASCAR | [`ejercicios/07-choque-nascar`](../ejercicios/07-choque-nascar/README.md) | 0 / 6 | ⬜ |
