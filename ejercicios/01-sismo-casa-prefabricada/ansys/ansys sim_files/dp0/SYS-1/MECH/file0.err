@@ -1,0 +1,30 @@
+/COM,ANSYS RELEASE Release 16.0      BUILD 16.0      UP20141203       16:05:21
+
+ *** WARNING ***                         CP =       2.578   TIME= 16:05:25
+ Using 1 iteration per substep may result in unconverged solutions for   
+ nonlinear analysis and the program may not indicate divergence in this  
+ case.  Check your results.                                              
+
+ *** WARNING ***                         CP =       2.609   TIME= 16:05:25
+ Element shape checking is currently inactive.  Issue SHPP,ON or         
+ SHPP,WARN to reactivate, if desired.                                    
+
+ *** WARNING ***                         CP =       2.641   TIME= 16:05:25
+ Material number 5 (used by element 4145 ) should normally have at least 
+ one MP or one TB type command associated with it.  Output of energy by  
+ material may not be available.                                          
+
+ *** WARNING ***                         CP =       4.781   TIME= 16:05:26
+ If the maximum number of equilibrium iterations allowed is less than 4, 
+ the automatic time step size is independent of the number of            
+ iterations used.                                                        
+
+ *** WARNING ***                         CP =       5.281   TIME= 16:05:27
+ Material number 5 (used by element 4145 ) should normally have at least 
+ one MP or one TB type command associated with it.  Output of energy by  
+ material may not be available.                                          
+
+ *** WARNING ***                         CP =       7.078   TIME= 16:05:28
+ If the maximum number of equilibrium iterations allowed is less than 4, 
+ the automatic time step size is independent of the number of            
+ iterations used.                                                        
