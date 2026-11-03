@@ -310,6 +310,17 @@ coinciden en orden de magnitud con la simulación.
 | fig:ej4-B | [`figuras/flux_density_B.png`](figuras/flux_density_B.png) | \|B\| vista frontal (4 polos) | ✅ |
 | fig:ej4-B3d | [`figuras/flux_density_B_3d.png`](figuras/flux_density_B_3d.png) | \|B\| isométrica, núcleo + barras | ✅ |
 | fig:ej4-H | [`figuras/field_intensity_H.png`](figuras/field_intensity_H.png) | \|H\| vista frontal | ✅ |
+| fig:ej4-Bvec | [`figuras/flux_density_B_vectores.png`](figuras/flux_density_B_vectores.png) | Vectores de B, vista desde +Z, dominio completo con la caja de aire de 180 × 180 mm: el flujo sale de las bobinas, recorre el núcleo y se cierra por el aire | ✅ |
+| fig:ej4-Bvec-det | [`figuras/flux_density_B_vectores_detalle.png`](figuras/flux_density_B_vectores_detalle.png) | Detalle de la mitad superior: vectores por elemento en dientes, yugo, bobinas y aire | ✅ |
+
+**Cómo se obtuvieron los vectores:** *Total Magnetic Flux Density*, barra *Vector
+Display* (botón de vectores en la barra *Result*), longitud uniforme, *Show Undeformed
+WireFrame*. La figura completa usa vectores alineados a una rejilla. El detalle usa
+vectores por elemento. Los dos cuerpos de aire (agujero central y caja exterior)
+estaban ocultos en el árbol y se activaron con *Show Body*. El color indica |B| y la
+flecha el sentido. Alrededor de una bobina con corriente saliente (+Z, ⊙ en
+`devanado_fases.png`) B gira en sentido antihorario; alrededor de una entrante (⊗),
+en sentido horario (regla de la mano derecha).
 
 ## 10. Referencias
 
